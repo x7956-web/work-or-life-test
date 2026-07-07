@@ -1,0 +1,53 @@
+{
+  "$schema": "https://static.cloudbase.net/cli/cloudbaserc.schema.json",
+  "version": "2.0",
+  "envId": "{{env.TCB_ENV_ID}}",
+  "region": "ap-shanghai",
+  "app": {
+    "serviceName": "career-test",
+    "root": "./",
+    "framework": "static",
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "outputDir": "./dist",
+    "deployPath": "/",
+    "ignore": [
+      "**/*.map",
+      "**/.DS_Store",
+      "**/node_modules/**",
+      "**/.git/**"
+    ]
+  },
+  "hosting": {
+    "source": "./dist",
+    "indexDocument": "index.html",
+    "errorDocument": "index.html",
+    "headers": [
+      {
+        "source": "/assets/**/*",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=2592000, immutable"
+          }
+        ]
+      },
+      {
+        "source": "/index.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "http://:host/:path*",
+        "destination": "https://:host/:path*",
+        "statusCode": 301
+      }
+    ]
+  }
+}
