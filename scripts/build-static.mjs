@@ -19,8 +19,8 @@ const files = [
   "index.html",
   "assets/style.ebfbb5a672.css",
   "assets/app.0b7bbd5869.js",
-  "assets/xhs-post.20260708.css",
-  "assets/xhs-post.20260708.js"
+  "assets/xhs-post.20260708-scene.css",
+  "assets/xhs-post.20260708-scene.js"
 ];
 let total = 0;
 for (const file of files) {
