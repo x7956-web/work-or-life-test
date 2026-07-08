@@ -18,7 +18,9 @@ await cp(source, target, { recursive: true });
 const files = [
   "index.html",
   "assets/style.ebfbb5a672.css",
-  "assets/app.0b7bbd5869.js"
+  "assets/app.0b7bbd5869.js",
+  "assets/xhs-post.20260708.css",
+  "assets/xhs-post.20260708.js"
 ];
 let total = 0;
 for (const file of files) {
