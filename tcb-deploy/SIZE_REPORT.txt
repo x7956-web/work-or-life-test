@@ -2,8 +2,8 @@ CloudBase 静态托管部署包体积报告
 index.html: < 1 KB
 assets/style.ebfbb5a672.css: < 6 KB
 assets/app.0b7bbd5869.js: 28036 bytes
-assets/xhs-post.20260708.css: < 14 KB
-assets/xhs-post.20260708.js: < 14 KB
-total_page_assets: < 65 KB
+assets/xhs-post.20260708.css: < 12 KB
+assets/xhs-post.20260708.js: < 12 KB
+total_page_assets: < 60 KB
 under_1mb: true
 images: 0

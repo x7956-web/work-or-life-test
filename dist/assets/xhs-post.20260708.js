@@ -1,6 +1,6 @@
 (function () {
   const copies = {
-    card1: `第 1 张封面图候选\n\n顶部小字：\n想离开前，先看清自己卡在哪里\n\n主标题：\n你该换工作，\n还是换活法？\n\n副标题：\n很多问题，不是辞职能解决的。\n\n方案 1：双门版\n左边是写字楼门、工牌、未读消息和文件压力；右边是窗、植物、日程节奏和舒展空间。\n\n方案 2：两条路版\n左边是通向办公楼和打卡牌的直路；右边是通向日光、树和慢节奏的弯路。\n\n方案 3：两个房间版\n左边是会议室、电脑、待办墙；右边是生活房间、窗光、植物和休息角。\n\n三版均为 CSS 原创线稿，不使用外部图片、外部字体、小红书水印，不照抄竞品电梯构图。`,
+    card1: `第 1 张封面图\n\n顶部小字：\n想离开前，先看清自己卡在哪里\n\n主标题：\n你该换工作，\n还是换活法？\n\n副标题：\n很多问题，不是辞职能解决的。\n\n视觉：双门版原创封面。左边门写“换工作 / 继续上班”，门内是办公桌、电脑、文件堆、日历、未读消息、高楼窗景，表达职场系统、压力、重复和消耗。右边门写“换活法 / 调整生活”，门内是阳光、窗、植物、书、咖啡、远方小路，表达生活状态、松弛、呼吸感和重新开始。中间人物背包站在两扇门之间，像在犹豫选择。`,
     card2: `凭第一直觉去选，不要犹豫～\n\n1 如果突然给你三个月带薪假期，\n你第一反应更像：\n\nA. 终于可以好好休息了\nB. 去一个陌生城市待一段时间\nC. 学点一直想学的东西\nD. 认真想想以后的人生\n\n2 最近让你最疲惫的事情更接近：\n\nA. 永远做不完的工作\nB. 不断处理别人的情绪\nC. 日复一日的重复生活\nD. 不知道自己为什么努力`,
     card3: `3 如果未来三年，\n你的生活和现在一模一样。\n你的第一感受是：\n\nA. 可以接受\nB. 有点不甘心\nC. 开始焦虑\nD. 有种喘不过气的感觉\n\n4 你最近最常出现的状态是：\n\nA. 身体累\nB. 情绪累\nC. 对什么都提不起劲\nD. 总觉得人生卡住了\n\n5 看到别人辞职、换城市、转行的时候，\n你心里的真实想法更像：\n\nA. 太冲动了\nB. 挺羡慕的\nC. 我也想试试\nD. 我好像早就想离开了`,
     body: `你该换工作，还是换活法？\n\n很多人以为自己想辞职，\n其实真正想换的可能不是公司，\n而是现在这种生活方式。\n\n如果你最近也有这些感觉：\n\n1. 一想到周一就开始抗拒\n2. 下班后连回消息都觉得累\n3. 看到别人转型又忍不住焦虑\n4. 觉得时间完全不属于自己\n\n那你可以先测一下：\n你是具体工作环境在消耗你，\n还是长期节奏已经透支，\n还是被外界机会刺激，\n还是整套生活结构都该调整。\n\n测完不是让你马上辞职，\n而是先看清楚：\n你到底该换什么。\n\n#测试话题 #性格测试 #趣味心理测试 #心理测试 #趣味测试 #人生选择题 #职业迷茫 #想辞职`
@@ -37,14 +37,8 @@
           <a href="#/test/work-or-life">查看测试</a>
         </header>
 
-        <section class="xhs-material-block xhs-cover-options">
-          <div class="xhs-section-note">第 1 张封面图 · 三个原创候选</div>
-          <div class="xhs-cover-caption">方案一：双门版</div>
-          ${renderCoverCard("doors")}
-          <div class="xhs-cover-caption">方案二：两条路版</div>
-          ${renderCoverCard("roads")}
-          <div class="xhs-cover-caption">方案三：两个房间版</div>
-          ${renderCoverCard("rooms")}
+        <section class="xhs-material-block">
+          ${renderCoverCard()}
           ${copyButton("card1")}
         </section>
 
@@ -78,29 +72,32 @@
     `;
   }
 
-  function renderCoverCard(variant) {
+  function renderCoverCard() {
     return `
-      <article class="xhs-card xhs-cover-card xhs-cover-${variant}" aria-label="小红书封面图 ${variant}">
+      <article class="xhs-card xhs-cover-card" aria-label="小红书双门封面图">
         <div class="xhs-topline">想离开前，先看清自己卡在哪里</div>
         <div class="xhs-cover-title">你该换工作，<br>还是换活法？</div>
         <div class="xhs-cover-subtitle">很多问题，不是辞职能解决的。</div>
-        <div class="xhs-cover-visual xhs-visual-${variant}" aria-hidden="true">
-          <div class="xhs-side xhs-side-work">
-            <span class="xhs-side-title">工作压力</span>
-            <span class="xhs-building"><i></i><i></i><i></i></span>
-            <span class="xhs-desk"></span>
-            <span class="xhs-message">99+</span>
-            <span class="xhs-file file-a"></span>
-            <span class="xhs-file file-b"></span>
+        <div class="xhs-cover-visual" aria-hidden="true">
+          <div class="xhs-door xhs-work-door">
+            <span class="xhs-door-label"><b>换工作</b><small>继续上班</small></span>
+            <span class="xhs-office-window"><i></i><i></i><i></i><i></i></span>
+            <span class="xhs-laptop"></span>
+            <span class="xhs-paper-stack"></span>
+            <span class="xhs-calendar">MON</span>
+            <span class="xhs-notice">99+</span>
+            <span class="xhs-briefcase"></span>
           </div>
-          <div class="xhs-center-person"><span></span></div>
-          <div class="xhs-side xhs-side-life">
-            <span class="xhs-side-title">生活节奏</span>
+          <div class="xhs-choice-person"><span></span></div>
+          <div class="xhs-door xhs-life-door">
+            <span class="xhs-door-label"><b>换活法</b><small>调整生活</small></span>
+            <span class="xhs-open-light"></span>
             <span class="xhs-sun"></span>
-            <span class="xhs-window"></span>
+            <span class="xhs-life-window"></span>
             <span class="xhs-plant"></span>
-            <span class="xhs-clock"></span>
-            <span class="xhs-path"></span>
+            <span class="xhs-book"></span>
+            <span class="xhs-cup"></span>
+            <span class="xhs-far-road"></span>
           </div>
         </div>
         <div class="xhs-bottom-note">1 分钟看懂：你想离开的冲动，来自哪里</div>
