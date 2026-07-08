@@ -6,9 +6,23 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const source = path.join(root, "tcb-deploy", "public");
 const target = path.join(root, "dist");
+const studioSources = [
+  ["src/xhsStudio.css", "tcb-deploy/public/assets/xhs-studio.20260708.css"],
+  ["src/xhsStudioPreset.js", "tcb-deploy/public/assets/xhs-studio.preset.20260708.js"],
+  ["src/xhsStudio.js", "tcb-deploy/public/assets/xhs-studio.20260708.js"]
+];
 
 if (!existsSync(source)) {
   throw new Error("Missing tcb-deploy/public static source directory");
+}
+
+for (const [from, to] of studioSources) {
+  const sourceFile = path.join(root, from);
+  const targetFile = path.join(root, to);
+  if (existsSync(sourceFile)) {
+    await mkdir(path.dirname(targetFile), { recursive: true });
+    await cp(sourceFile, targetFile);
+  }
 }
 
 await rm(target, { recursive: true, force: true });

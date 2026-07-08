@@ -117,6 +117,18 @@ function calculateRadar(counts, primary, confidence, total) {
 
 function render() {
   const { page, step, slug } = state.route;
+  if (page === "xhs-studio") {
+    app.innerHTML = renderStudioSourceBridge();
+    return;
+  }
+  if (page === "xhs-post") {
+    app.innerHTML = renderStudioSourceBridge("小红书三页图文素材页", "CloudBase 静态构建版本会渲染完整三页素材预览。");
+    return;
+  }
+  if (page === "xhs-product") {
+    app.innerHTML = renderStudioSourceBridge("商品详情页素材页", "CloudBase 静态构建版本会渲染完整商品主图、详情正文和发货话术。");
+    return;
+  }
   if (page !== "test") {
     app.innerHTML = renderHome();
     return;
@@ -167,6 +179,22 @@ function renderHome() {
 
 function renderCover() {
   return renderHome();
+}
+
+function renderStudioSourceBridge(title = "小红书素材工作台", note = "完整工作台由 npm run build 同步 src/xhsStudio* 到 dist 后运行。") {
+  return `
+    <main class="source-studio-page">
+      <section class="source-studio-card">
+        <p class="eyebrow">xhs material studio</p>
+        <h1>${title}</h1>
+        <p>${note}</p>
+        <div class="source-studio-actions">
+          <a href="#/xhs-studio">素材工作台</a>
+          <a href="#/test/work-or-life">正式测试页</a>
+        </div>
+      </section>
+    </main>
+  `;
 }
 
 function renderQuiz() {
