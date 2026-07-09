@@ -202,15 +202,26 @@
         ${field("说明文案", "product.poster.description", config.product.poster.description, true)}
         ${field("便利贴文案", "product.poster.note", config.product.poster.note, true)}
         ${config.product.poster.benefits.map((benefit, index) => field(`底部卖点 ${index + 1}`, `product.poster.benefits.${index}`, benefit)).join("")}
+        <button type="button" class="studio-mini-copy" data-studio-copy="product-poster-copy">复制主图文案</button>
       `)}
       ${panel("商品信息", `
         ${field("商品标题", "product.title", config.product.title)}
         ${field("价格", "product.price", config.product.price)}
         ${field("辅助说明", "product.aux", config.product.aux, true)}
+        <button type="button" class="studio-mini-copy" data-studio-copy="product-title-price">复制标题价格区</button>
       `)}
-      ${panel("详情正文", field("商品详情正文", "product.detail", config.product.detail, true))}
-      ${panel("购买须知", field("购买须知", "product.purchaseNotice", config.product.purchaseNotice, true))}
-      ${panel("自动发货话术", field("自动发货话术", "product.deliveryScript", config.product.deliveryScript, true))}
+      ${panel("详情正文", `
+        ${field("商品详情正文", "product.detail", config.product.detail, true)}
+        <button type="button" class="studio-mini-copy" data-studio-copy="product-detail">复制商品详情正文</button>
+      `)}
+      ${panel("购买须知", `
+        ${field("购买须知", "product.purchaseNotice", config.product.purchaseNotice, true)}
+        <button type="button" class="studio-mini-copy" data-studio-copy="product-notice">复制购买须知</button>
+      `)}
+      ${panel("自动发货话术", `
+        ${field("自动发货话术", "product.deliveryScript", config.product.deliveryScript, true)}
+        <button type="button" class="studio-mini-copy" data-studio-copy="product-delivery">复制自动发货话术</button>
+      `)}
     `;
   }
 
@@ -349,20 +360,47 @@
         <div class="studio-shot-block">
           ${renderProductPoster(config)}
           ${withActions ? `<div class="studio-card-actions">
+            <button type="button" data-studio-copy="product-poster-copy">复制主图文案</button>
             <button type="button" data-studio-action="capture" data-target="product-poster">截图模式</button>
             <button type="button" data-studio-action="download" data-target="product-poster">下载 PNG</button>
           </div>` : ""}
         </div>
-        <article class="studio-product-detail">
-          <div class="studio-product-head">
-            <h2>${escapeHtml(config.product.title)}</h2>
-            <strong>${escapeHtml(config.product.price)}</strong>
-            <span>${lineBreak(config.product.aux)}</span>
-          </div>
-          ${copySection("商品详情正文", config.product.detail, "product-detail")}
-          ${copySection("购买须知", config.product.purchaseNotice, "product-notice")}
-          ${copySection("自动发货话术", config.product.deliveryScript, "product-delivery")}
-        </article>
+        <div class="studio-shot-block">
+          ${renderProductDetailCard(config, false)}
+          ${withActions ? `<div class="studio-card-actions">
+            <button type="button" data-studio-copy="product-title-price">复制标题价格区</button>
+            <button type="button" data-studio-copy="product-detail">复制详情正文</button>
+            <button type="button" data-studio-copy="product-notice">复制购买须知</button>
+            <button type="button" data-studio-copy="product-delivery">复制发货话术</button>
+            <button type="button" data-studio-copy="product-all">复制整套商品详情</button>
+            <button type="button" data-studio-action="capture" data-target="product-detail">截图模式</button>
+            <button type="button" data-studio-action="download" data-target="product-detail">下载 PNG</button>
+          </div>` : ""}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderProductDetailCard(config, withCopyButtons = true) {
+    return `
+      <article class="studio-product-detail" data-shot="product-detail">
+        ${renderProductInfoCard(config, withCopyButtons)}
+        ${copySection("商品详情正文", config.product.detail, "product-detail", withCopyButtons)}
+        ${copySection("购买须知", config.product.purchaseNotice, "product-notice", withCopyButtons)}
+        ${copySection("自动发货话术", config.product.deliveryScript, "product-delivery", withCopyButtons)}
+      </article>
+    `;
+  }
+
+  function renderProductInfoCard(config, withCopyButton = true) {
+    return `
+      <section class="studio-product-head">
+        <div>
+          <h2>${escapeHtml(config.product.title)}</h2>
+          <strong>${escapeHtml(config.product.price)}</strong>
+        </div>
+        <span>${lineBreak(config.product.aux)}</span>
+        ${withCopyButton ? `<button type="button" class="studio-mini-copy" data-studio-copy="product-title-price">复制标题价格区</button>` : ""}
       </section>
     `;
   }
@@ -461,6 +499,8 @@
       content = renderPostCard(config.post.cards[index], index);
     } else if (target === "product-poster") {
       content = renderProductPoster(config);
+    } else if (target === "product-detail") {
+      content = renderProductDetailCard(config, false);
     }
     return `
       <main class="studio-capture-page">
@@ -473,12 +513,12 @@
     `;
   }
 
-  function copySection(title, text, key) {
+  function copySection(title, text, key, withCopyButton = true) {
     return `
       <section class="studio-copy-box">
         <h3>${escapeHtml(title)}</h3>
         <p>${lineBreak(text)}</p>
-        <button type="button" data-studio-copy="${key}">复制${escapeHtml(title)}</button>
+        ${withCopyButton ? `<button type="button" data-studio-copy="${key}">复制${escapeHtml(title)}</button>` : ""}
       </section>
     `;
   }
@@ -506,6 +546,9 @@
     const config = getConfig();
     if (token === "post-body") return `${config.post.body}\n\n${config.post.tags}`;
     if (token && token.startsWith("post-card:")) return postCardText(config, Number(token.split(":")[1]));
+    if (token === "product-poster-copy") return productPosterText(config);
+    if (token === "product-title-price") return `${config.product.title}\n${config.product.price}\n${config.product.aux}`;
+    if (token === "product-all") return productAllText(config);
     if (token === "product-detail") return config.product.detail;
     if (token === "product-notice") return config.product.purchaseNotice;
     if (token === "product-delivery") return config.product.deliveryScript;
@@ -533,6 +576,29 @@
       const number = startNumber + questionIndex;
       return `${number}. ${question.title}\n\n${question.options.map((option, optionIndex) => `${["A", "B", "C", "D"][optionIndex]}. ${option}`).join("\n")}`;
     }).join("\n\n")}`;
+  }
+
+  function productPosterText(config) {
+    const poster = config.product.poster;
+    return [
+      poster.title,
+      poster.subtitle,
+      poster.description,
+      poster.note,
+      `底部卖点：${poster.benefits.join(" / ")}`
+    ].filter(Boolean).join("\n\n");
+  }
+
+  function productAllText(config) {
+    return [
+      `${config.product.title}\n${config.product.price}\n${config.product.aux}`,
+      "商品详情正文：",
+      config.product.detail,
+      "购买须知：",
+      config.product.purchaseNotice,
+      "自动发货话术：",
+      config.product.deliveryScript
+    ].join("\n\n");
   }
 
   function handleStudioAction(button) {
